@@ -15,7 +15,7 @@ const examSequence = ["MSE","ESE"];
 let papersData = [];
 
 
-fetch("http://localhost:3000/api/papers")
+fetch("https://olds-papers-api.onrender.com/api/papers")
 .then(res => res.json())
 .then(data => {
 
