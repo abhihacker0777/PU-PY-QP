@@ -1,0 +1,7 @@
+node_modules
+node_modules/
+functions/node_modules/
+sync-script/node_modules/
+.firebase/
+.env
+serviceAccount.json

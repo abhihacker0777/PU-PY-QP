@@ -4,7 +4,8 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>Previous Year - Paper</title>
+<title>Poornima University: Previous Year - Question Paper</title>
+<link rel="icon" type="image/png" href="/logo.png">
 
 <link rel="stylesheet" href="style-QPBK.css">
 
@@ -14,8 +15,14 @@
 
 <h2>Question Papers</h2>
 
+
 <h3>Course</h3>
-<div id="course" class="cards"></div>
+
+<div id="loader">Loading...</div>
+
+<div id="coursesSection" style="display:none;">
+   <div id="course" class="cards"></div>
+</div>
 
 <h3 id="yearTitle" class="hidden">Year</h3>
 <div id="year" class="cards hidden"></div>
@@ -32,7 +39,7 @@
 <h3 id="papersTitle" class="hidden">Papers</h3>
 <div id="papers" class="hidden"></div>
 
-<script src="script-PYWEB.js"></script>
+<script type="module" src="script-PYWEB.js"></script>
 
 </body>
 </html>

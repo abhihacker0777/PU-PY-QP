@@ -1,3 +1,21 @@
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+/* 🔥 PASTE YOUR FIREBASE CONFIG HERE */
+const firebaseConfig = {
+  apiKey: "AIzaSyBSoQ_np-n6qMkWEMvbzHyXZTiXPlXbgbk",
+  authDomain: "pu-py-qp.firebaseapp.com",
+  projectId: "pu-py-qp",
+  storageBucket: "pu-py-qp.firebasestorage.app",
+  messagingSenderId: "650783354497",
+  appId: "1:650783354497:web:4cb4c53b70778fce45a780",
+  measurementId: "G-RPRNMFH2B6"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
 var selected = {};
 
 // ORDER SEQUENCE
@@ -14,17 +32,44 @@ const examSequence = ["MSE","ESE"];
 
 let papersData = [];
 
+async function loadFirebaseData(){
 
-fetch("https://olds-papers-api.onrender.com/api/papers")
-.then(res => res.json())
-.then(data => {
+ const loader = document.getElementById("loader");
+ const coursesSection = document.getElementById("coursesSection");
 
-   papersData = data;
+ loader.style.display = "block";
+ coursesSection.style.display = "none";
+
+ try {
+
+   const cached = localStorage.getItem("papersCache");
+
+   if(cached){
+     papersData = JSON.parse(cached);
+   } else {
+     const querySnapshot = await getDocs(collection(db, "papers"));
+
+     papersData = [];
+
+     querySnapshot.forEach(doc => {
+       papersData.push(doc.data());
+     });
+
+     localStorage.setItem("papersCache", JSON.stringify(papersData));
+   }
 
    loadCourses();
 
-});
+   loader.style.display = "none";
+   coursesSection.style.display = "block";
 
+ } catch(e){
+   console.error("Error:", e);
+   loader.innerText = "Failed to load data";
+ }
+}
+
+loadFirebaseData();
 
 function unique(field, filter={}){
  return [...new Set(
@@ -49,6 +94,8 @@ function renderCards(id, list, type){
 function select(type,value,el){
 
 selected[type]=value;
+
+
 
 document.querySelectorAll("#"+type+" .card")
 .forEach(c=>c.classList.remove("active"));
@@ -163,7 +210,7 @@ else if(type=="exam"){
 
 }
 
-
+window.select = select;
 
 function loadCourses(){
  let available = unique("course");
